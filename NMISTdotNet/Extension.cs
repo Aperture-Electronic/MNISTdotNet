@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace NMISTdotNet
 {
@@ -9,10 +7,13 @@ namespace NMISTdotNet
     {
         public static int ReadNonIntelInt32(this BinaryReader br)
         {
-            var bytes = br.ReadBytes(sizeof(Int32));
-            if (BitConverter.IsLittleEndian) Array.Reverse(bytes);
+            byte[] bytes = br.ReadBytes(sizeof(int));
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes);
+            }
+
             return BitConverter.ToInt32(bytes, 0);
         }
     }
-}
 }
