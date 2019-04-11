@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace NMISTdotNet
+namespace MNISTdotNet
 {
     public static class BigEndianUtils
     {

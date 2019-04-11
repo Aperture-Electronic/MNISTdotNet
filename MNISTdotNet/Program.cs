@@ -7,7 +7,7 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Transforms;
 
-namespace NMISTdotNet
+namespace MNISTdotNet
 {
     internal class Program
     {
@@ -30,7 +30,7 @@ namespace NMISTdotNet
             }
             else
             {
-                image_length = 768;
+                image_length = 784;
             }
 
             // Check the CSV file existion

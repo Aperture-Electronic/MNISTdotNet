@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MNISTdotNet", "MNISTdotNet\MNISTdotNet.csproj", "{5D3B7CA4-5B6A-4AA6-8D32-31C5E27A3C61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MNISTTestClient", "MNISTTestClient\MNISTTestClient.csproj", "{A7A24F4E-B678-431E-8B35-ECE8FD659FCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D3B7CA4-5B6A-4AA6-8D32-31C5E27A3C61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3B7CA4-5B6A-4AA6-8D32-31C5E27A3C61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3B7CA4-5B6A-4AA6-8D32-31C5E27A3C61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3B7CA4-5B6A-4AA6-8D32-31C5E27A3C61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7A24F4E-B678-431E-8B35-ECE8FD659FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A24F4E-B678-431E-8B35-ECE8FD659FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7A24F4E-B678-431E-8B35-ECE8FD659FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7A24F4E-B678-431E-8B35-ECE8FD659FCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4705274-0011-4B4E-B1EE-D664BAE33210}
+	EndGlobalSection
+EndGlobal

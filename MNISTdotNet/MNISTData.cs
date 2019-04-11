@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.ML.Data;
 
-namespace NMISTdotNet
+namespace MNISTdotNet
 {
     internal class MNISTData
     {
@@ -10,7 +10,7 @@ namespace NMISTdotNet
         [VectorType()]
         public float[] ImageVector;
 
-        [LoadColumn(768)]
+        [LoadColumn(784)]
         public int Number;
     }
 
