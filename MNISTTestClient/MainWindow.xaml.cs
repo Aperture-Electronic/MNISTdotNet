@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows;
@@ -46,7 +47,7 @@ namespace MNISTTestClient
         {
             // Get and convert the bitmap drawed
             // Render the bitmap
-            RenderTargetBitmap renderBitmap = new RenderTargetBitmap((int)canDraw.Width, (int)canDraw.Height, 96, 96, PixelFormats.BlackWhite);
+            RenderTargetBitmap renderBitmap = new RenderTargetBitmap((int)canDraw.ActualWidth, (int)canDraw.ActualHeight, 96, 96, PixelFormats.Default);
             renderBitmap.Render(canDraw);
 
             // Convert it to bitmap object
@@ -93,6 +94,23 @@ namespace MNISTTestClient
 
             //Input the user data
             MNISTNumber result = predEngine.Predict(data);
+
+            // Get the maximun guess
+            int n = 0;
+            float max = result.Score[0];
+            for (int i = 0; i < 10; i++)
+            {
+                if(result.Score[i] > max)
+                {
+                    n = i;
+                    max = result.Score[i];
+                }
+
+                Console.WriteLine($"Result of [{i}] = {result.Score[i]}");
+            }
+
+            // Output the result
+            lblResult.Content = n.ToString();
         }
     }
 }

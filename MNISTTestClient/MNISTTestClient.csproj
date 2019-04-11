@@ -126,7 +126,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NMISTData.cs" />
+    <Compile Include="MNISTData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

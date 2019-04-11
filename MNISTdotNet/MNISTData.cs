@@ -7,7 +7,7 @@ namespace MNISTdotNet
     internal class MNISTData
     {
         [LoadColumn(0)]
-        [VectorType()]
+        [VectorType(784)]
         public float[] ImageVector;
 
         [LoadColumn(784)]

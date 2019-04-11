@@ -5,7 +5,7 @@ namespace MNISTTestClient
     internal class MNISTData
     {
         [LoadColumn(0)]
-        [VectorType()]
+        [VectorType(784)]
         public float[] ImageVector;
 
         [LoadColumn(784)]
@@ -14,7 +14,8 @@ namespace MNISTTestClient
 
     internal class MNISTNumber
     {
-        [ColumnName("Number")]
-        public int Number;
+        [ColumnName("Score")]
+        [LoadColumn(10)]
+        public float[] Score;
     }
 }
