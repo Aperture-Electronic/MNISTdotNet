@@ -6,16 +6,16 @@ namespace MNISTTestClient
     {
         [LoadColumn(0)]
         [VectorType(784)]
+        [ColumnName("ImageVector")]
         public float[] ImageVector;
 
         [LoadColumn(784)]
-        public float Number;
+        public string Number;
     }
 
     internal class MNISTNumber
     {
-        [ColumnName("Score")]
-        [LoadColumn(10)]
-        public float[] Score;
+        [ColumnName("PredictedLabel")]
+        public string Number;
     }
 }

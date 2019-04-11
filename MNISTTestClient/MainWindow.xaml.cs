@@ -62,10 +62,10 @@ namespace MNISTTestClient
 
             // Resize the bitmap to MNIST image size (28 x 28 = 784 pixels)
             Bitmap MNIST_bitmap = new Bitmap(28, 28);
-            using (Graphics graphics = Graphics.FromImage(bitmap))
+            using (Graphics graphics = Graphics.FromImage(MNIST_bitmap))
             {
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.DrawImage(MNIST_bitmap, new Rectangle(0, 0, 28, 28), new Rectangle(0, 0, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+                graphics.DrawImage(bitmap, new Rectangle(0, 0, 28, 28), new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1), GraphicsUnit.Pixel);
             }
 
             // Read and convert the pixels into ML.net data array
@@ -75,8 +75,16 @@ namespace MNISTTestClient
             {
                 for (int x = 0; x < 28; x++)
                 {
-                    pixels[p_flat] = (MNIST_bitmap.GetPixel(x, y).R > 0) ? 255 : 0;
+                    pixels[p_flat] = (MNIST_bitmap.GetPixel(x, y).ToArgb() != -1) ? 1 : 0;
+                    if ((x == 0) || (y == 0))
+                    {
+                        pixels[p_flat] = 0;
+                    }
+
+                    Console.Write(pixels[p_flat]);
+                    p_flat++;
                 }
+                Console.WriteLine();
             }
 
             MNISTData data = new MNISTData()
@@ -87,7 +95,8 @@ namespace MNISTTestClient
             // Create the machine learning framework (context) and load the trained model
             MLContext context = new MLContext();
             FileStream modelFileStream = new FileStream(ml_model_file, FileMode.Open);
-            ITransformer trainedModel = context.Model.Load(modelFileStream);
+            ITransformer trainedModel = context.Model.Load(modelFileStream, out DataViewSchema inputSchema);
+            modelFileStream.Close();
 
             // Create prediction engine related to the loaded trained model
             PredictionEngine<MNISTData, MNISTNumber> predEngine = context.Model.CreatePredictionEngine<MNISTData, MNISTNumber>(trainedModel);
@@ -95,22 +104,8 @@ namespace MNISTTestClient
             //Input the user data
             MNISTNumber result = predEngine.Predict(data);
 
-            // Get the maximun guess
-            int n = 0;
-            float max = result.Score[0];
-            for (int i = 0; i < 10; i++)
-            {
-                if(result.Score[i] > max)
-                {
-                    n = i;
-                    max = result.Score[i];
-                }
-
-                Console.WriteLine($"Result of [{i}] = {result.Score[i]}");
-            }
-
             // Output the result
-            lblResult.Content = n.ToString();
+            lblResult.Content = result.Number;
         }
     }
 }

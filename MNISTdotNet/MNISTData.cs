@@ -8,16 +8,17 @@ namespace MNISTdotNet
     {
         [LoadColumn(0)]
         [VectorType(784)]
+        [ColumnName("ImageVector")]
         public float[] ImageVector;
 
         [LoadColumn(784)]
-        public int Number;
+        public string Number;
     }
 
     internal class MNISTNumber
     {
-        [ColumnName("Number")]
-        public int Number;
+        [ColumnName("PredictedLabel")]
+        public string Number;
     }
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace MNISTdotNet
         private readonly List<byte[]> test_data_image = new List<byte[]>();
         private readonly List<byte> test_data_label = new List<byte>();
 
-        public int image_length { get; private set; } = 0;
+        public int Image_length { get; private set; } = 0;
 
         private enum MNISTDatabaseReadStatus
         {
@@ -70,7 +71,7 @@ namespace MNISTdotNet
 
                     foreach (byte pixel in image)
                     {
-                        line += $"{pixel},";
+                        line += $"{(pixel > 127 ? 1 : 0)},";
                     }
 
                     line += label.ToString();
@@ -94,7 +95,7 @@ namespace MNISTdotNet
 
                     foreach (byte pixel in image)
                     {
-                        line += $"{pixel},";
+                        line += $"{(pixel > 127 ? 1 : 0)},";
                     }
 
                     line += label.ToString();
@@ -151,7 +152,7 @@ namespace MNISTdotNet
                 byte cLabel = label_rd.ReadByte();
                 //byte[,] cImage = new byte[image_w, image_h];
                 byte[] cImageFlat = new byte[image_w * image_h];
-                image_length = image_w * image_h;
+                Image_length = image_w * image_h;
 
                 // Read the image
                 int j = 0;

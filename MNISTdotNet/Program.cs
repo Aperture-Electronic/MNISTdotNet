@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.Data.DataView;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
@@ -23,10 +22,10 @@ namespace MNISTdotNet
             Console.WriteLine("Do you want to convert and create the CSV file for ML.net? If the file is already exist, type 'N' to skip, else type 'Y' to avoid errors.");
             if (Console.ReadKey().Key == ConsoleKey.Y)
             {
-                MNISTDataConvertor convertor = new MNISTDataConvertor(1000, 600);
+                MNISTDataConvertor convertor = new MNISTDataConvertor();
                 convertor.ConvertAndSave();
 
-                image_length = convertor.image_length;
+                image_length = convertor.Image_length;
             }
             else
             {
@@ -65,7 +64,7 @@ namespace MNISTdotNet
                 {
                     // The text loader for MNIST CSV format
                     new TextLoader.Column(nameof(MNISTData.ImageVector), DataKind.Single, 0, image_length - 1),
-                    new TextLoader.Column(nameof(MNISTData.Number), DataKind.Single, image_length),
+                    new TextLoader.Column(nameof(MNISTData.Number), DataKind.String, image_length),
                 },
                 hasHeader: false, separatorChar: ',');
 
@@ -75,21 +74,21 @@ namespace MNISTdotNet
                 {
                     // The text loader for MNIST CSV format
                     new TextLoader.Column(nameof(MNISTData.ImageVector), DataKind.Single, 0, image_length - 1),
-                    new TextLoader.Column(nameof(MNISTData.Number), DataKind.Single, image_length),
+                    new TextLoader.Column(nameof(MNISTData.Number), DataKind.String, image_length),
                 },
                 hasHeader: false, separatorChar: ',');
 
             // Common data process configuration with pipeline data transformations
             EstimatorChain<TransformerChain<ColumnConcatenatingTransformer>> dataProcessPipeline =
-                context.Transforms.Conversion.MapValueToKey("Label", nameof(MNISTData.Number)).
-                Append(context.Transforms.Concatenate("Features", nameof(MNISTData.ImageVector)).
+                context.Transforms.Conversion.MapValueToKey(outputColumnName: "Label", inputColumnName: nameof(MNISTData.Number)).
+                Append(context.Transforms.Concatenate(outputColumnName: "Features", inputColumnNames: nameof(MNISTData.ImageVector)).
                 AppendCacheCheckpoint(context));
 
             // Set the training algorithm, then create and config the modelBuilder
-            SdcaMultiClassTrainer trainer = context.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(labelColumnName: "Label", featureColumnName: "Features");
+            SdcaMaximumEntropyMulticlassTrainer trainer = context.MulticlassClassification.Trainers.SdcaMaximumEntropy();
             EstimatorChain<KeyToValueMappingTransformer> trainingPipeline =
                 dataProcessPipeline.Append(trainer).
-                Append(context.Transforms.Conversion.MapKeyToValue(nameof(MNISTData.Number), "Label"));
+                Append(context.Transforms.Conversion.MapKeyToValue(outputColumnName: "PredictedLabel"));
 
             // Train the model fitting to the DataSet
             Stopwatch watch = Stopwatch.StartNew();
@@ -101,21 +100,21 @@ namespace MNISTdotNet
 
             Console.WriteLine("===== Evaluating Model's accuracy with Test data =====");
             IDataView predictions = trainedModel.Transform(testingDataView);
-            MultiClassClassifierMetrics metrics = context.MulticlassClassification.Evaluate(data: predictions, label: nameof(MNISTData.Number), score: "Score");
+            MulticlassClassificationMetrics metrics = context.MulticlassClassification.Evaluate(data: predictions);
             PrintClassifierMetrics(metrics);
 
             using (FileStream modelStream = new FileStream(model_file, FileMode.OpenOrCreate, FileAccess.Write))
             {
-                context.Model.Save(trainedModel, modelStream);
+                context.Model.Save(trainedModel, null, modelStream);
             }
 
             Console.WriteLine($"The model is saved to {model_file}");
         }
 
-        private static void PrintClassifierMetrics(MultiClassClassifierMetrics metrics)
+        private static void PrintClassifierMetrics(MulticlassClassificationMetrics metrics)
         {
-            Console.WriteLine($"Accurary marco: {metrics.AccuracyMacro}, Accurary micro: {metrics.AccuracyMicro}");
-            Console.WriteLine($"Log loss: {metrics.LogLoss}, Top-K: {metrics.TopK}");
+            Console.WriteLine($"Accurary marco: {metrics.MacroAccuracy}, Accurary micro: {metrics.MicroAccuracy}");
+            Console.WriteLine($"Log loss: {metrics.LogLoss}, Log loss reduction: {metrics.LogLossReduction}");
         }
     }
 }
