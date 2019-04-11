@@ -5,7 +5,7 @@ A MNIST test program using .net ML machine learning library
 This project using .NET Core 2.1 for training and testing, and give a GUI client to test which written with .NET Framework 4.7.2 and WPF.
 
 ## Best learning score
-![Best score screenshot](http://t.w2wz.cn/t6/700/1555002414x2059272782.png)
+![Best score screenshot](https://github.com/Aperture-Electronic/MNISTdotNet/blob/master/BestScoreScreenshot.png)
 Using 60000 training samples and 10000 testing samples.
 
 Using SDCA maximum entropy multiclass trainer.
