@@ -1,2 +1,2 @@
-# NMISTdotNet
-A NMIST test program using .net ML machine learning library
+# MNISTdotNet
+A MNIST test program using .net ML machine learning library
